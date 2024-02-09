@@ -10,12 +10,12 @@ import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 import { addSchema } from "../schemas/contactsSchemas.js";
 
-const getAllContacts = async (req, res, next) => {
+const getAllContacts = async (req, res) => {
   const result = await listContacts();
   res.json(result);
 };
 
-const getOneContact = async (req, res, next) => {
+const getOneContact = async (req, res) => {
   const { id } = req.params;
   const result = await getContactById(id);
   if (!result) {
@@ -24,7 +24,7 @@ const getOneContact = async (req, res, next) => {
   res.json(result);
 };
 
-const deleteContact = async (req, res, next) => {
+const deleteContact = async (req, res) => {
   const { id } = req.params;
   const result = await removeContact(id);
   if (!result) {
