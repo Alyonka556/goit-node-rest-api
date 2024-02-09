@@ -7,30 +7,31 @@ import {
 } from "../services/contactsServices.js";
 
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
+import HttpError from "../helpers/HttpError.js";
 
 import { addSchema } from "../schemas/contactsSchemas.js";
 
 const getAllContacts = async (req, res) => {
   const result = await listContacts();
-  res.json(result);
+  res.status(200).json(result);
 };
 
 const getOneContact = async (req, res) => {
   const { id } = req.params;
   const result = await getContactById(id);
   if (!result) {
-    throw HttpError(404, `Contact with id=${id} not found`);
+    throw HttpError(404, "Not Found");
   }
-  res.json(result);
+  res.status(200).json(result);
 };
 
 const deleteContact = async (req, res) => {
   const { id } = req.params;
   const result = await removeContact(id);
   if (!result) {
-    throw HttpError(404, `Contact with id=${id} not found`);
+    throw HttpError(404, "Not found");
   }
-  res.json({
+  res.status(200).json({
     message: "Delete success",
   });
 };
@@ -47,14 +48,14 @@ const createContact = async (req, res) => {
 const updateContact = async (req, res) => {
   const { error } = addSchema.validate(req.body);
   if (error) {
-    throw HttpError(400, error.message);
+    throw HttpError(400, "Body must have at least one field");
   }
   const { id } = req.params;
   const result = await updateContactById(id, req.body);
   if (!result) {
-    throw HttpError(404, `Contact with id=${id} not found`);
+    throw HttpError(404, "Not found");
   }
-  res.json(result);
+  res.status(200).json(result);
 };
 
 export default {
