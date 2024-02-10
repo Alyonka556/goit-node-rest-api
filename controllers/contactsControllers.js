@@ -31,17 +31,16 @@ const deleteContact = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json({
-    message: "Delete success",
-  });
+  res.status(200).json(result);
 };
 
 const createContact = async (req, res) => {
+  const { name, email, phone } = req.body;
   const { error } = addSchema.validate(req.body);
   if (error) {
     throw HttpError(400, error.message);
   }
-  const result = await addContact(req.body);
+  const result = await addContact(name, email, phone);
   res.status(201).json(result);
 };
 
