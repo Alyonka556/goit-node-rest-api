@@ -9,7 +9,7 @@ import {
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import HttpError from "../helpers/HttpError.js";
 
-import { addSchema } from "../schemas/contactsSchemas.js";
+import { addSchema, updateSchema } from "../schemas/contactsSchemas.js";
 
 const getAllContacts = async (req, res) => {
   const result = await listContacts();
@@ -45,9 +45,9 @@ const createContact = async (req, res) => {
 };
 
 const updateContact = async (req, res) => {
-  const { error } = addSchema.validate(req.body);
+  const { error } = updateSchema.validate(req.body);
   if (error) {
-    throw HttpError(400, "Body must have at least one field");
+    throw HttpError(400, error.message);
   }
   const { id } = req.params;
   const result = await updateContactById(id, req.body);
